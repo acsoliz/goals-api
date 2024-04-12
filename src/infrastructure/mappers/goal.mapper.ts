@@ -2,7 +2,17 @@ import { CustomError, GoalEntity } from "../../domain";
 
 export class GoalMapper {
   static goalEntityFromObject(object: { [key: string]: any }) {
-    const { id, _id, title, description, difficulty, status, type } = object;
+    const {
+      id,
+      _id,
+      title,
+      description,
+      difficulty,
+      status,
+      type,
+      owner,
+      dates,
+    } = object;
 
     if (!_id || !id) {
       throw CustomError.badRequest("Missing id");
@@ -13,6 +23,7 @@ export class GoalMapper {
     if (!difficulty) throw CustomError.badRequest("Missing difficulty");
     if (!status) throw CustomError.badRequest("Missing status");
     if (!type) throw CustomError.badRequest("Missing type");
+    if (!owner) throw CustomError.badRequest("Missing owner");
 
     return new GoalEntity(
       _id || id,
@@ -20,7 +31,9 @@ export class GoalMapper {
       description,
       difficulty,
       status,
-      type
+      type,
+      owner,
+      dates
     );
   }
 }

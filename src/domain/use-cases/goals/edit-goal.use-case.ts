@@ -5,13 +5,11 @@ import { CustomError } from "../../errors/custom.error";
 import { GoalsRepository } from "../../repositories/goals.repository";
 
 interface GoalObj {
-  goal: {
-    id: string;
-    title: string;
-    type: string;
-    difficulty: number;
-    status: string;
-  };
+  id: string;
+  title: string;
+  type: string;
+  difficulty: number;
+  status: string;
 }
 
 interface EditGoalUseCase {
@@ -26,16 +24,13 @@ export class EditGoal implements EditGoalUseCase {
   async execute(editGoalDto: EditGoalDto): Promise<GoalObj> {
     // Editar goal
     const goal = await this.goalResository.edit(editGoalDto);
-    console.log("edit goal::", goal);
 
     return {
-      goal: {
-        id: goal.id,
-        title: goal.title,
-        type: goal.type,
-        difficulty: goal.difficulty,
-        status: goal.status,
-      },
+      id: goal.id,
+      title: goal.title,
+      type: goal.type,
+      difficulty: goal.difficulty,
+      status: goal.status,
     };
   }
 }

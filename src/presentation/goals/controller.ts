@@ -11,7 +11,7 @@ import { GoalModel } from "../../data/mongodb";
 
 export class GoalsController {
   // DI
-  constructor(private readonly goalsRepository: GoalsRepository) {}
+  constructor(private readonly goalsRepository: GoalsRepository) { }
 
   private handleError = (error: unknown, res: Response) => {
     if (error instanceof CustomError) {
@@ -24,7 +24,6 @@ export class GoalsController {
   registerGoal = (req: Request, res: Response) => {
     const [error, registerGoalDto] = RegisterGoalDto.create(req.body);
     if (error) return res.status(400).json({ error });
-
     new RegisterGoal(this.goalsRepository)
       .execute(registerGoalDto!)
       .then((data) => res.json(data))
@@ -33,22 +32,26 @@ export class GoalsController {
 
   editGoal = (req: Request, res: Response) => {
     const [error, editGoalDto] = EditGoalDto.create(req.body);
-    if (error) return res.status(400).json({ error });
+    const { id } = req.body;
 
-    new EditGoal(this.goalsRepository)
-      .execute(editGoalDto!)
+    if (error || !id) return res.status(400).json({ error });
+    if (!id) return res.status(400).json({ error: "id is required!" });
+
+    GoalModel.findOneAndUpdate({ _id: id }, { ...editGoalDto }, { new: true })
       .then((data) => res.json(data))
       .catch((error) => this.handleError(error, res));
   };
 
   getGoals = (req: Request, res: Response) => {
-    GoalModel.find()
+    const { goals } = req.body;
+    const { owner } = req.query;
+    const query = goals ? { _id: { $in: goals } } : (owner ? { owner } : {});
+
+    GoalModel.find(query)
       .then((goals) => {
-        res.json({
-          goals,
-          // user: req.body.user,
-        });
+        res.json(goals);
       })
       .catch(() => res.status(500).json({ error: "Internal server error" }));
   };
+
 }

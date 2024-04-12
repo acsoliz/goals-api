@@ -6,12 +6,20 @@ export class RegisterGoalDto {
     public description: string,
     public type: string,
     public difficulty: number,
-    public status: string
+    public status: string,
+    public owner: string,
+
+    public dates: {
+      createdAt?: Date;
+      updatedAt?: Date;
+      completionDate?: Date;
+    }
   ) {}
 
   static create(object: { [key: string]: any }): [string?, RegisterGoalDto?] {
     // const { name, email, password } = object;
-    const { title, description, type, difficulty, status } = object;
+    const { title, description, type, difficulty, status, owner, dates } =
+      object;
 
     if (!title) return ["Missing title"];
     if (!description) return ["Missing description"];
@@ -19,10 +27,19 @@ export class RegisterGoalDto {
     if (!difficulty) return ["Missing difficulty"];
     if (!Number.isInteger(difficulty)) return ["invalid type difficulty "];
     if (!status) return ["Missing status"];
+    if (!owner) return ["Owner is Required - bad request"];
 
     return [
       undefined,
-      new RegisterGoalDto(title, description, type, difficulty, status),
+      new RegisterGoalDto(
+        title,
+        description,
+        type,
+        difficulty,
+        status,
+        owner,
+        dates
+      ),
     ];
   }
 }

@@ -8,7 +8,6 @@ const goalSchema = new Schema({
   description: {
     type: String,
     required: [true, "Description is required"],
-    unique: true,
   },
   type: {
     type: String,
@@ -16,11 +15,28 @@ const goalSchema = new Schema({
   },
   difficulty: {
     type: Number,
-    required: [true, "difficulty is required"],
+    required: [true, "Difficulty is required"],
   },
   status: {
     type: String,
-    required: [true, "status is required"],
+    required: [true, "Status is required"],
+  },
+  owner: {
+    type: String,
+    required: [true, "Owner is required"],
+  },
+  dates: {
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+    endDate: {
+      type: Date,
+    },
   },
   // img: {
   //   type: String,

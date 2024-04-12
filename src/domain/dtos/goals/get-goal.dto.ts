@@ -1,8 +1,7 @@
 // import { Validators } from "../../../config";
 
-export class EditGoalDto {
+export class RegisterGoalDto {
   private constructor(
-    // public id: string,
     public title: string,
     public description: string,
     public type: string,
@@ -16,21 +15,20 @@ export class EditGoalDto {
     }
   ) {}
 
-  static create(object: { [key: string]: any }): [string?, EditGoalDto?] {
+  static create(object: { [key: string]: any }): [string?, RegisterGoalDto?] {
     // const { name, email, password } = object;
     const { title, description, type, difficulty, status, dates } = object;
 
-    // if (!id) return ["id is required"];
     if (!title) return ["Missing title"];
     if (!description) return ["Missing description"];
     if (!type) return ["Missing type"];
     if (!difficulty) return ["Missing difficulty"];
+    if (!Number.isInteger(difficulty)) return ["invalid type difficulty "];
     if (!status) return ["Missing status"];
 
     return [
       undefined,
-      // new EditGoalDto(id, title, description, type, difficulty, status, dates),
-      new EditGoalDto(title, description, type, difficulty, status, dates),
+      new RegisterGoalDto(title, description, type, difficulty, status, dates),
     ];
   }
 }

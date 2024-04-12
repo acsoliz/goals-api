@@ -3,13 +3,19 @@ import { CustomError } from "../../errors/custom.error";
 import { GoalsRepository } from "../../repositories/goals.repository";
 
 interface GoalObj {
-  goal: {
-    id: string;
-    title: string;
-    type: string;
-    difficulty: number;
-    status: string;
+  // goal: {
+  id: string;
+  title: string;
+  type: string;
+  difficulty: number;
+  status: string;
+  owner: string;
+  dates: {
+    createdAt?: Date;
+    updatedAt?: Date;
+    completionDate?: Date;
   };
+  // };
 }
 
 interface RegisterGoalUseCase {
@@ -24,15 +30,16 @@ export class RegisterGoal implements RegisterGoalUseCase {
   async execute(registerGoalDto: RegisterGoalDto): Promise<GoalObj> {
     // Crear goal
     const goal = await this.goalsResository.register(registerGoalDto);
-    console.log("en execute, goal::", goal);
     return {
-      goal: {
-        id: goal.id,
-        title: goal.title,
-        type: goal.type,
-        difficulty: goal.difficulty,
-        status: goal.status,
-      },
+      // goal: {
+      id: goal.id,
+      title: goal.title,
+      type: goal.type,
+      difficulty: goal.difficulty,
+      status: goal.status,
+      owner: goal.owner,
+      dates: goal.dates,
+      // },
     };
   }
 }

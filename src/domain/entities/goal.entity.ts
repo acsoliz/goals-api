@@ -5,8 +5,12 @@ export class GoalEntity {
     public description: string,
     public type: string,
     public difficulty: number,
-    // public createdAt: string,
-    // public updatedAt: string,
+    public owner: string,
+    public dates: {
+      createdAt: Date;
+      updatedAt: Date;
+      completionDate?: Date;
+    },
     public status: string
   ) {}
 }

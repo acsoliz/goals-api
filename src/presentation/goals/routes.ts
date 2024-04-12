@@ -14,12 +14,10 @@ export class GoalsRoutes {
     const controller = new GoalsController(goalsRepository);
 
     // Definir todas mis rutas principales
-    router.post("/add", controller.registerGoal);
-    router.put("/edit", controller.editGoal);
+    router.post("/add", [AuthMiddleware.validateJWT], controller.registerGoal);
+    router.put("/edit", [AuthMiddleware.validateJWT], controller.editGoal);
 
-    router.get("/", controller.getGoals);
-
-    // router.get("/", [AuthMiddleware.validateJWT], controller.getUsers);
+    router.get("/", [AuthMiddleware.validateJWT], controller.getGoals);
 
     return router;
   }
