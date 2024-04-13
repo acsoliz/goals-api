@@ -19,8 +19,19 @@ export class Server {
 
   async start() {
     // Middlewares
+
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true })); // x-www-
+    this.app.use((req, res, next) => {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Credentials", "true");
+      res.header(
+        "Access-Control-Allow-Headers",
+        "Origin, X-Requested-With, Content-Type, Accept"
+      );
+      res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+      next();
+    });
 
     // Usar las rutas definidas
     this.app.use(this.routes);
