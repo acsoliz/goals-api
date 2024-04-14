@@ -23,15 +23,7 @@ export class Server {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true })); // x-www-
 
-    this.app.use((req, res, next) => {
-      res.header("Access-Control-Allow-Origin", "http://localhost:19006");
-      res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      next();
-    });
-
     // // Middlewares CORS
-
     this.app.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "http://localhost:19006");
       res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
