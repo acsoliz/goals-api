@@ -34,7 +34,7 @@ export class GoalsController {
     const [error, editGoalDto] = EditGoalDto.create(req.body);
     const { id } = req.body;
 
-    if (error || !id) return res.status(400).json({ error });
+    if (error) return res.status(400).json({ error });
     if (!id) return res.status(400).json({ error: "id is required!" });
 
     GoalModel.findOneAndUpdate({ _id: id }, { ...editGoalDto }, { new: true })
