@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 
+import { CorsMiddleware } from "./middlewares/cors.middleware";
+
 interface Options {
   port?: number;
   routes: Router;
@@ -24,14 +26,8 @@ export class Server {
     this.app.use(express.urlencoded({ extended: true })); // x-www-
 
     // // Middlewares CORS
-    this.app.use((req, res, next) => {
-      res.header("Access-Control-Allow-Origin", "http://localhost:19006");
-      res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept"
-      );
-      // res.header("Access-Control-Allow-Credentials", "true");
-      next();
-    });
+    this.app.use(CorsMiddleware.configure());
+
 
     // Usar las rutas definidas
     this.app.use(this.routes);
