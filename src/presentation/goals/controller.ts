@@ -49,7 +49,7 @@ export class GoalsController {
 
     GoalModel.find(query)
       .then((goals) => {
-        res.json(goals);
+        res.json({ total: goals.length, goals });
       })
       .catch(() => res.status(500).json({ error: "Internal server error" }));
   };
