@@ -43,13 +43,13 @@ export class GoalsController {
   };
 
   getGoals = (req: Request, res: Response) => {
-    const { goals } = req.body;
+    const { goalsIds } = req.body;
     const { owner } = req.query;
-    const query = goals ? { _id: { $in: goals } } : (owner ? { owner } : {});
+    const query = goalsIds ? { _id: { $in: goalsIds } } : (owner ? { owner } : {});
 
     GoalModel.find(query)
       .then((goals) => {
-        res.json(goals);
+        res.json({ total: goals.length, goals });
       })
       .catch(() => res.status(500).json({ error: "Internal server error" }));
   };

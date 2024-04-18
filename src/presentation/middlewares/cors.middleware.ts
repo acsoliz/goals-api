@@ -1,24 +1,13 @@
-/*
-TODO Implementar
-*/
-import { NextFunction, Request, Response } from 'express';
-
-
+/* cors.middleware.ts */
+import cors from 'cors';
 
 export class CorsMiddleware {
-
-  static cors = (req: Request, res: Response, next: NextFunction) => {
-
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Credentials", "true");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-    next();
+  static configure() {
+    return cors({
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE'], // Permitir los métodos HTTP especificados
+      allowedHeaders: ['Content-Type', 'Authorization'], // Permitir los encabezados especificados
+      optionsSuccessStatus: 200 // Establecer el código de estado para las solicitudes preflight OPTIONS
+    });
   }
-
-
 }
-
