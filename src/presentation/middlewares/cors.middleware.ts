@@ -3,11 +3,15 @@ import cors from 'cors';
 
 export class CorsMiddleware {
   static configure() {
+    // return cors({
+    //   origin: ['http://localhost:19006', '*'],
+    //   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Permitir los métodos HTTP especificados
+    //   allowedHeaders: ['Content-Type', 'Authorization'], // Permitir los encabezados especificados
+    //   optionsSuccessStatus: 200 // Establecer el código de estado para las solicitudes preflight OPTIONS
+    // });
     return cors({
-      origin: '*',
-      methods: ['GET', 'POST', 'PUT', 'DELETE'], // Permitir los métodos HTTP especificados
-      allowedHeaders: ['Content-Type', 'Authorization'], // Permitir los encabezados especificados
-      optionsSuccessStatus: 200 // Establecer el código de estado para las solicitudes preflight OPTIONS
+      allowedHeaders: ['Content-Type', 'x-token', 'Authorization'] // Agrega aquí cualquier otra cabecera que quieras permitir
     });
   }
+
 }
