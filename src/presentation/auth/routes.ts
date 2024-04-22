@@ -15,7 +15,7 @@ export class AuthRoutes {
     // Definir todas mis rutas principales
     router.post("/login", controller.loginUser);
     router.post("/register", controller.registerUser);
-    router.get("/verify-token", [AuthMiddleware.validateJWT], controller.verifyToken);
+    router.get("/validation", [AuthMiddleware.validateJWT], controller.verifyToken);
 
 
     router.get("/", [AuthMiddleware.validateJWT], controller.getUsers);

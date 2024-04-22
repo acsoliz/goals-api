@@ -37,8 +37,7 @@ export class AuthController {
 
   loginUser = (req: Request, res: Response) => {
     const [error, loginUserDto] = LoginUserDto.create(req.body);
-    console.log("In loginUser loginUserDto:::", loginUserDto);
-    console.log("In loginUser error:::", error);
+    console.log("Last, change, In login :::", loginUserDto);
 
     if (error) return res.status(400).json({ error });
 
