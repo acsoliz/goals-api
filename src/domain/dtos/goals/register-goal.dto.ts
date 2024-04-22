@@ -8,13 +8,12 @@ export class RegisterGoalDto {
     public difficulty: number,
     public status: string,
     public owner: string,
-
     public dates: {
       createdAt?: Date;
       updatedAt?: Date;
       completionDate?: Date;
     }
-  ) {}
+  ) { }
 
   static create(object: { [key: string]: any }): [string?, RegisterGoalDto?] {
     // const { name, email, password } = object;

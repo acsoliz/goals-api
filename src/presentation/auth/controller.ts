@@ -11,7 +11,7 @@ import { UserModel } from "../../data/mongodb";
 
 export class AuthController {
   // DI
-  constructor(private readonly authRepository: AuthRepository) {}
+  constructor(private readonly authRepository: AuthRepository) { }
 
   private handleError = (error: unknown, res: Response) => {
     if (error instanceof CustomError) {
@@ -37,8 +37,7 @@ export class AuthController {
 
   loginUser = (req: Request, res: Response) => {
     const [error, loginUserDto] = LoginUserDto.create(req.body);
-    console.log("In loginUser loginUserDto:::", loginUserDto);
-    console.log("In loginUser error:::", error);
+    console.log("Last, change, In login :::", loginUserDto);
 
     if (error) return res.status(400).json({ error });
 
@@ -58,4 +57,12 @@ export class AuthController {
       })
       .catch(() => res.status(500).json({ error: "Internal server error" }));
   };
+
+
+
+  verifyToken = (req: Request, res: Response) => {
+    const token = req.header('Authorization')
+    const user = req.body.user
+    return res.status(200).json({ token, user });
+  }
 }

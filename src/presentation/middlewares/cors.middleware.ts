@@ -10,4 +10,5 @@ export class CorsMiddleware {
       optionsSuccessStatus: 200 // Establecer el código de estado para las solicitudes preflight OPTIONS
     });
   }
+
 }
