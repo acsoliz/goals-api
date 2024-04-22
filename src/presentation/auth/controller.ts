@@ -62,7 +62,6 @@ export class AuthController {
 
 
   verifyToken = (req: Request, res: Response) => {
-    // const token = req.headers.authorization?.split(" ")[1];
     const token = req.header('Authorization')
     const user = req.body.user
     return res.status(200).json({ token, user });

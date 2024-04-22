@@ -18,6 +18,7 @@ export class GoalsRoutes {
     router.put("/edit", [AuthMiddleware.validateJWT], controller.editGoal);
 
     router.get("/", [AuthMiddleware.validateJWT], controller.getGoals);
+    router.get("/:id", [AuthMiddleware.validateJWT], controller.getGoal);
 
     return router;
   }

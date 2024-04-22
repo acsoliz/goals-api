@@ -22,6 +22,11 @@ export class GoalsController {
   };
 
   registerGoal = (req: Request, res: Response) => {
+    const owner = req.body.user._id && req.body.user._id.toString();
+
+    if (!owner) return res.status(400).json({ error: "Owner field is required, veify authMidleware" });
+    req.body.owner = owner;
+
     const [error, registerGoalDto] = RegisterGoalDto.create(req.body);
     if (error) return res.status(400).json({ error });
     new RegisterGoal(this.goalsRepository)
@@ -54,4 +59,14 @@ export class GoalsController {
       .catch(() => res.status(500).json({ error: "Internal server error" }));
   };
 
+  getGoal = (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    GoalModel.find({ _id: id })
+      .then((goal) => {
+        console.log('la response es goal:::', goal)
+        res.json(goal[0]);
+      })
+      .catch(() => res.status(500).json({ error: "Internal server error" }));
+  };
 }

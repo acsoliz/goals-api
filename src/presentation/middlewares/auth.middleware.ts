@@ -25,9 +25,7 @@ export class AuthMiddleware {
       const user = await UserModel.findById(payload.id).select('-password');
       if (!user) return res.status(401).json({ error: 'Invalid token - user not found' })
 
-
       req.body.user = user;
-
 
       next();
     } catch (error) {
