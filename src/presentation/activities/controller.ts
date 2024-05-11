@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import {
-  GoalsRepository,
-  EditGoal,
-  EditGoalDto,
-  RegisterGoal,
-  RegisterGoalDto,
+  ActivityRepository,
+  EditActivity,
+  EditActivityDto,
+  RegisterActivity,
+  RegisterActivityDto,
   CustomError,
 } from "../../domain";
-import { GoalModel } from "../../data/mongodb";
+import { ActivityModel } from "../../data/mongodb";
 
-export class GoalsController {
+export class ActivitiesController {
   // DI
-  constructor(private readonly goalsRepository: GoalsRepository) { }
+  constructor(private readonly activityRepository: ActivityRepository) { }
 
   private handleError = (error: unknown, res: Response) => {
     if (error instanceof CustomError) {
@@ -21,59 +21,58 @@ export class GoalsController {
     return res.status(500).json({ error: "Internal Server Error" });
   };
 
-  registerGoal = (req: Request, res: Response) => {
+  registerActivity = (req: Request, res: Response) => {
     const owner = req.body.user._id && req.body.user._id.toString();
 
     if (!owner) return res.status(400).json({ error: "Owner field is required, veify authMidleware" });
     req.body.owner = owner;
 
-    const [error, registerGoalDto] = RegisterGoalDto.create(req.body);
+    const [error, registerActivityDto] = RegisterActivityDto.create(req.body);
     if (error) return res.status(400).json({ error });
-    new RegisterGoal(this.goalsRepository)
-      .execute(registerGoalDto!)
+    new RegisterActivity(this.activityRepository)
+      .execute(registerActivityDto!)
       .then((data) => res.json(data))
       .catch((error) => this.handleError(error, res));
   };
 
-  editGoal = (req: Request, res: Response) => {
-    const [error, editGoalDto] = EditGoalDto.create(req.body);
+  editActivity = (req: Request, res: Response) => {
+    const [error, editActivityDto] = EditActivityDto.create(req.body);
     const { id } = req.body;
 
     if (error) return res.status(400).json({ error });
     if (!id) return res.status(400).json({ error: "id is required!" });
 
-    GoalModel.findOneAndUpdate({ _id: id }, { ...editGoalDto }, { new: true })
+    ActivityModel.findOneAndUpdate({ _id: id }, { ...editActivityDto }, { new: true })
       .then((data) => res.json(data))
       .catch((error) => this.handleError(error, res));
   };
 
-  getGoals = (req: Request, res: Response) => {
-    const { goalsIds } = req.body;
+  getActivities = (req: Request, res: Response) => {
+    const { activitiesIds } = req.body;
     const { owner } = req.query;
-    const query = goalsIds ? { _id: { $in: goalsIds } } : (owner ? { owner } : {});
+    const query = activitiesIds ? { _id: { $in: activitiesIds } } : (owner ? { owner } : {});
 
-    // GoalModel.find(query)
-    GoalModel.aggregate([
+    ActivityModel.aggregate([
       { $match: query },
       { $addFields: { id: { $toString: "$_id" } } },
       { $project: { _id: 0 } }
     ])
-      .then((goals) => {
-        res.json({ total: goals.length, goals });
+      .then((activities) => {
+        res.json({ total: activities.length, activities });
       })
       .catch(() => res.status(500).json({ error: "Internal server error" }));
   };
 
-  getGoal = (req: Request, res: Response) => {
+  getActivity = (req: Request, res: Response) => {
     const { id } = req.params;
 
-    GoalModel.findById(id)
-      .then((goal) => {
-        if (goal) {
-          const { _id, ...otherProperties } = goal.toObject();
+    ActivityModel.findById(id)
+      .then((activity) => {
+        if (activity) {
+          const { _id, ...otherProperties } = activity.toObject();
           res.json({ id: _id.toString(), ...otherProperties });
         } else {
-          res.status(404).json({ error: "Goal not found" });
+          res.status(404).json({ error: "Activity not found" });
         }
       })
       .catch(() => res.status(500).json({ error: "Internal server error" }));
