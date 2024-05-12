@@ -10,8 +10,8 @@ export class RegisterCategoryDto {
 
   static create(object: { [key: string]: any }): [string?, RegisterCategoryDto?] {
     const { name, description, icon, color } = object;
-
-    if (!name) return ["Missing title"];
+    console.log('EN EL DTO DE CATEGORIAS, object:::', object)
+    if (!name) return ["Missing name"];
     if (!description) return ["Missing description"];
     if (!icon) return ["Missing icon"];
     if (!color) return ["Missing color"];
