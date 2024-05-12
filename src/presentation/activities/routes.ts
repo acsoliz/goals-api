@@ -15,6 +15,7 @@ export class ActivitiesRoutes {
 
     // Definir todas mis rutas principales
     router.post("/add", [AuthMiddleware.validateJWT], controller.registerActivity);
+    router.post("/add-items", [AuthMiddleware.validateJWT], controller.registerActivities);
     router.put("/edit", [AuthMiddleware.validateJWT], controller.editActivity);
 
     router.get("/", [AuthMiddleware.validateJWT], controller.getActivities);

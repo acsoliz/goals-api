@@ -9,6 +9,7 @@ import {
 } from "../../domain";
 import { ActivityModel } from "../../data/mongodb";
 
+
 export class ActivitiesController {
   // DI
   constructor(private readonly activityRepository: ActivityRepository) { }
@@ -22,10 +23,6 @@ export class ActivitiesController {
   };
 
   registerActivity = (req: Request, res: Response) => {
-    const owner = req.body.user._id && req.body.user._id.toString();
-
-    if (!owner) return res.status(400).json({ error: "Owner field is required, veify authMidleware" });
-    req.body.owner = owner;
 
     const [error, registerActivityDto] = RegisterActivityDto.create(req.body);
     if (error) return res.status(400).json({ error });
@@ -33,6 +30,26 @@ export class ActivitiesController {
       .execute(registerActivityDto!)
       .then((data) => res.json(data))
       .catch((error) => this.handleError(error, res));
+  };
+
+  registerActivities = (req: Request, res: Response) => {
+    if (!Array.isArray(req.body.activities)) {
+      return res.status(400).json({ error: "Activities field should be an array" });
+    }
+
+    const activitiesPromises = req.body.activities.map((activityData: any) => {
+
+      const [error, registerActivityDto] = RegisterActivityDto.create(activityData);
+      if (error) return Promise.reject({ error });
+
+      return new RegisterActivity(this.activityRepository)
+        .execute(registerActivityDto!)
+        .catch((error) => this.handleError(error, res));
+    });
+
+    Promise.all(activitiesPromises)
+      .then((data) => res.json(data))
+      .catch((error) => res.status(500).json({ error }));
   };
 
   editActivity = (req: Request, res: Response) => {
