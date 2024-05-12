@@ -48,7 +48,10 @@ export class ActivitiesController {
     });
 
     Promise.all(activitiesPromises)
-      .then((data) => res.json(data))
+      .then((data) => {
+        console.log(data);
+        res.send('Activities created successfully!')
+      })
       .catch((error) => res.status(500).json({ error }));
   };
 

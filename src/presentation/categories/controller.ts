@@ -45,7 +45,10 @@ export class CategoriesController {
         .catch((error) => this.handleError(error, res));
     })
     Promise.all(categoriesPromises)
-      .then((data) => res.json(data))
+      .then((data) => {
+        console.log(data);
+        res.send('Categories created successfully!')
+      })
       .catch((error) => res.status(500).json({ error }));
   };
 
