@@ -31,6 +31,25 @@ export class CategoriesController {
       .catch((error) => this.handleError(error, res));
   };
 
+  registerCategories = (req: Request, res: Response) => {
+    if (!Array.isArray(req.body.categories)) {
+      return res.status(400).json({ error: "Categories field should be an array" });
+    }
+    const categoriesPromises = req.body.categories.map((categoryData: any) => {
+      const [error, registerCategoryDto] = RegisterCategoryDto.create(categoryData);
+
+      if (error) return res.status(400).json({ error });
+      new RegisterCategory(this.categoryRepository)
+        .execute(registerCategoryDto!)
+        .then((data) => res.json(data))
+        .catch((error) => this.handleError(error, res));
+    })
+    Promise.all(categoriesPromises)
+      .then((data) => res.json(data))
+      .catch((error) => res.status(500).json({ error }));
+  };
+
+
   editCategory = (req: Request, res: Response) => {
     const [error, editCategoryDto] = EditCategoryDto.create(req.body);
     const { id } = req.body;

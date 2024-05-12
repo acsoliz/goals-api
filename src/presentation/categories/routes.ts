@@ -15,6 +15,7 @@ export class CategoriesRoutes {
 
     // Definir todas mis rutas principales
     router.post("/add", [AuthMiddleware.validateJWT], controller.registerCategory);
+    router.post("/load", [AuthMiddleware.validateJWT], controller.registerCategory);
     router.put("/edit", [AuthMiddleware.validateJWT], controller.editCategory);
 
     router.get("/", [AuthMiddleware.validateJWT], controller.getCategories);
